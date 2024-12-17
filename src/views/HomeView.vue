@@ -11,7 +11,7 @@
                     <SearchButton @click="searchPosts" />
                 </div>
             </div>
-            <div class="container rounded-5 bg-light">
+            <div class="container">
                 <div v-if="!filteredPosts.length" class="pt-5 fw-bold fs-5 text-secondary">
                     {{ posts.length ? '일치하는 ToDo가 없습니다.' : '등록된 ToDo가 없습니다. 새로운 ToDo를 등록해보세요.' }}
                 </div>

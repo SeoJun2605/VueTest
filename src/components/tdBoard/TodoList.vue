@@ -1,25 +1,7 @@
 <template>
-    <div class="container rounded-5 bg-light">
-        <div v-for="post in sortedPosts" :key="post.id" class="p-3">
-            <div class="container text-center border border-secondary border-2 rounded-2 position-relative post-item"
-                @click="onTodoClick(post)">
-                <div class="btn row align-items-center">
-                    <div class="col-md-3 border-end border-1 border-grey text-truncate">
-                        {{ post.title }}
-                    </div>
-                    <div class="col-md-3 border-end border-1 border-grey text-truncate">
-                        {{ post.author }}
-                    </div>
-                    <div class="col-md-4 border-end border-1 border-grey text-truncate">
-                        {{ post.date }}
-                    </div>
-                    <div class="btn col-md-2 position-absolute top-50 end-0 translate-middle-y trash"
-                        @click.stop="onDeleteClick(post.id)">
-                        <img alt="삭제" src="@/assets/img1.png" />
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
     </div>
 </template>
 
@@ -32,56 +14,107 @@ export default {
             required: true
         }
     },
-    computed: {
-        sortedPosts() {
-            return [...this.modelValue].sort((a, b) => {
-                const dateA = new Date(a.date);
-                const dateB = new Date(b.date);
-                return dateA - dateB;
-            });
+    mounted() {
+        this.initGrid();
+        this.loadData(this.modelValue);
+    },
+    watch: {
+        modelValue: {
+            handler(newValue) {
+                this.loadData(newValue);
+            },
+            deep: true
         }
     },
     methods: {
-        onTodoClick(post) {
-            this.$router.push({
-                name: 'detail',
-                query: { post: JSON.stringify(post) }
+        initGrid() {
+            $("#jqGrid").jqGrid({
+                colNames: ['ID', '제목', '작성자', '날짜', '삭제'],
+                datatype: "local",
+                data: this.modelValue,
+                colModel: [
+                    {
+                        name: 'id',
+                        hidden: true,
+                        key: true,
+                    },
+                    {
+                        name: 'title',
+                        align: 'center',
+                        sortable: false,
+                    },
+                    {
+                        name: 'author',
+                        align: 'center',
+                        sortable: false,
+                    },
+                    {
+                        name: 'date',
+                        align: 'center',
+                        sortable: true,
+                    },
+                    {
+                        name: 'actions',
+                        width: 50,
+                        align: 'center',
+                        sortable: false,
+                        formatter: function () {
+                            return 'X';
+                        }
+                    }
+                ],
+                autowidth: true,
+                height: 'auto',
+                rowNum: 5,
+                pager: "#jqGridPager",
+                sortorder: "asc",
+                sortname: 'date',
+                onSelectRow: (rowid, status, e) => {
+                    if ($(e.target).closest('td').attr('aria-describedby') === 'jqGrid_actions') {
+                        const rowData = $("#jqGrid").jqGrid('getLocalRow', rowid);
+                        this.deletePost(rowData);
+                    } else {
+                        const rowData = $("#jqGrid").jqGrid('getLocalRow', rowid);
+                        this.goToDetail(rowData);
+                    }
+                }
             });
         },
-        onDeleteClick(id) {
-            const confirmed = confirm("정말로 이 게시물을 삭제하시겠습니까?");
-            if (confirmed) {
-                const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                const updatedPosts = posts.filter(post => post.id !== id);
+        deletePost(rowData) {
+            if (confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
+                
+                // 전체 데이터에서 해당 항목 삭제
+                const allPosts = JSON.parse(localStorage.getItem('posts')) || [];
+                const updatedPosts = allPosts.filter(post => post.id !== rowData.id);
+                // localStorage 업데이트
                 localStorage.setItem('posts', JSON.stringify(updatedPosts));
+                // 부모 컴포넌트에 변경 알림
                 this.$emit('update:modelValue', updatedPosts);
             }
+        },
+        loadData(data) {
+            $("#jqGrid").jqGrid('clearGridData');
+            $("#jqGrid").jqGrid('setGridParam', {
+                data: data,
+                datatype: 'local'
+            }).trigger('reloadGrid');
+        },
+        goToDetail(rowData) {
+            this.$router.push({
+                name: 'detail',
+                query: { post: JSON.stringify(rowData) }
+            });
         }
     }
 };
 </script>
 
 <style>
-.row.align-items-center {
-    display: flex;
-    align-items: center;
+.ui-jqgrid td {
+    background-color: white;
+    cursor: pointer;
 }
-
-.post-item:hover {
-    background-color: #e0f7fa;
-}
-
-.trash:hover {
-    background-color: #f1dce7;
-}
-
-.post-item {
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-}
-
-.trash {
-    overflow: hidden;
+.ui-jqgrid-btable .jqgrow:hover {
+    background-color: #42c9db !important;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="pt-5">
-        <div class="container rounded-2 bg-info text-center p-3 w-50">
+        <div class="container rounded-2 bg-info-subtle text-center p-3 w-50 border shadow-lg">
             <div class="fw-bold fs-1 col-12 pb-4">상세화면</div>
             <div class="container rounded-5 bg-light">
                 <div class="row p-3">
@@ -19,8 +19,8 @@
                     </div>
                 </div>
                 <div class="text-end">
-                    <div class="btn m-3 px-4 bg-primary" @click="goToWrite">수정</div>
-                    <div class="btn m-3 px-4 bg-primary" @click="goToHome">목록</div>
+                    <div class="btn m-3 px-4 bg-primary shadow" @click="goToWrite">수정</div>
+                    <div class="btn m-3 px-4 bg-primary shadow" @click="goToHome">목록</div>
                 </div>
             </div>
         </div>
@@ -46,7 +46,11 @@ export default {
             });
         }
     }
-}
+};
 </script>
 
-<style></style>
+<style>
+.btn:hover {
+    opacity: 0.8;
+}
+</style>

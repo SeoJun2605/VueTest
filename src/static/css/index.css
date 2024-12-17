@@ -1,0 +1,77 @@
+.tab-elements {padding: 9px 0 0 0; position: relative; margin: 0 24px; height: 42px; overflow: hidden;}
+ul#tab-list {overflow:hidden; flex-wrap: nowrap; scroll-behavior: smooth; scroll-snap-type: block; display: flex;}
+ul#tab-list > li {white-space: nowrap; display: inline-flex; border-bottom-width: 1px; border-bottom-style: solid;}
+.tab-scroller {text-align: center; cursor: pointer; vertical-align: middle; line-height: 32px; padding-top: 10px;}
+.tab-scroller a {width: 24px; display: block;}
+.tab-scroller a:hover {background: #fff;}
+
+iframe{width: 1px;min-width: 100%;}
+[contenteditable] {
+    border: solid 1px lightgreen;
+    padding: 5px;
+    border-radius: 3px;
+}
+.nav-tabs > li, .nav-tabs > li > a {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.nav-tabs > li > a {
+    margin-right: 0;
+    padding: 3px 20px;
+    border-top-color: #dddddd;
+    border-right-color: #dddddd;
+    border-bottom-color: #dddddd;
+    display: flex;
+}
+.nav-tabs > li:first-child > a {
+    border-left-color: #dddddd;
+}
+.nav-tabs > li.active {
+    background: #fff;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+    border-bottom-color: #fff;
+}
+.panel-heading {padding: 10px;}
+.btn {border-radius: 3px;}
+#tab-list.nav > li button.close, #tab-list.nav > li a.close {padding-left: 10px; margin-right: -5px; font-size: 1.2em;}
+#tab-content .panel-heading .tab-buttons {display: inline-block;}
+#tab-content .panel-heading .breadcrumb {display: inline-block;}
+#tab-content .panel-heading .tab-buttons .btn {padding: 3px 5px;}
+.footer-blank {display: none;}
+.sidebar-collapse #side-menu li, .sidebar-collapse #side-menu li.active {transition: none;}
+.sidebar-collapse #side-menu > li {border-left: 4px solid transparent;}
+.sidebar-collapse #side-menu > li.active {border-left-color: #00b16a;}
+.collapse-menu-enter, .collapse-menu-leave-to {
+    max-height: 0;
+    overflow: hidden;
+}
+.collapse-menu-enter-to, .collapse-menu-leave {
+    max-height: var(--max-height);
+}
+.collapse-menu-leave-active {
+    transition: all .5s;
+    overflow: hidden;
+}
+.collapse-menu-enter-active {
+    transition: all .5s;
+    overflow: hidden;
+}
+body.mini-navbar .nav-header {
+    background: transparent;
+}
+.nav > li.favorite > a {
+    background: #2f4050;
+}
+.nav > li > a > .arrow {
+    transition: all .3s;
+}
+.nav > li.active > a > .arrow {
+    transform: rotate(0deg);
+}
+.nav > li > a > .arrow:before {
+    content: "\f105"
+}
+.nav > li.active > a > .arrow:before {
+    content: "\f105"
+}
